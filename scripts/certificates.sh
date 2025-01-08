@@ -18,8 +18,10 @@ openssl req -x509 -new -nodes -key "$CERT_DIR/$CA_NAME.key" -sha256 -days $CA_CE
 #create tls server key
 openssl genrsa -out "$CERT_DIR/$TLS_CERT_NAME.key" $KEY_SIZE
 #create tls server csr
+
+#admission-controller-server.admission-controller-namespace.svc
 openssl req -new -key "$CERT_DIR/$TLS_CERT_NAME.key" \
-  -subj "/CN=admission-controller-service" \
+  -subj "/CN=127.0.0.1" \
   -out "$CERT_DIR/$TLS_CERT_NAME.csr"
 
 #sign tls server csr

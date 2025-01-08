@@ -8,7 +8,8 @@ WORKDIR /app
 COPY . /app
 
 # Install the required Python packages
-RUN pip install flask
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/* \
+    && pip install flask
 
 # Expose the port the app runs on
 EXPOSE 8443
