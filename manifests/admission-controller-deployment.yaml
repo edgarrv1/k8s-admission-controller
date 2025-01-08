@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admission-controller-server
+  namespace: admission-controller-namespace
+  labels:
+    app: admission-controller-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: admission-controller-server
+  template:
+    metadata:
+      labels:
+        app: admission-controller-server
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1234
+      containers:
+      - name: admission-controller-server
+        image: admission-controller:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8443
+          name: webhook-api
+        volumeMounts:
+        - name: admission-controller-tls-secret
+          mountPath: /run/secrets/tls
+          readOnly: true
+      volumes:
+      - name: admission-controller-tls-secret
+        secret:
+          secretName: admission-controller-tls-secret
